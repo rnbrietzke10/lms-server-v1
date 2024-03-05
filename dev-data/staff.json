@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "firstName": "John",
+    "lastName": "Smith",
+    "email": "john.smith@isd.org",
+    "img": "",
+    "createAt": "August 3, 2020"
+  },
+  {
+    "id": 2,
+    "firstName": "Ryan",
+    "lastName": "Ramesy",
+    "email": "ryan.ramesy@isd.org",
+    "img": "",
+    "createAt": "August 3, 2021"
+  },
+  {
+    "id": 1,
+    "firstName": "Katie",
+    "lastName": "Kipp",
+    "email": "katie.kipp@isd.org",
+    "img": "",
+    "createAt": "August 3, 2020"
+  }
+]
