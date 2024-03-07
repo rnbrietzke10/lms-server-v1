@@ -1,6 +1,7 @@
 const fs = require('fs');
 const express = require('express');
 const morgan = require('morgan');
+const exp = require('constants');
 
 const app = express();
 
@@ -133,25 +134,33 @@ const deleteCourse = (req, res) => {
 // app.delete('/api/v1/staff/:id', deleteStaffMember);
 
 // Routes
-app.route('/api/v1/staff').get(getAllStaff).post(createStaffMember);
 
-app
-  .route('/api/v1/staff/:id')
+const staffRouter = express.Router();
+
+const courseRouter = express.Router();
+
+staffRouter.route('/').get(getAllStaff).post(createStaffMember);
+
+staffRouter
+  .route('/:id')
   .get(getStaffMember)
   .patch(updateStaffMember)
   .delete(deleteStaffMember);
 
-app.route('/api/v1/courses').get(getAllCourses).post(createCourse);
+courseRouter.route('/').get(getAllCourses).post(createCourse);
 
-app
-  .route('/api/v1/courses/:id')
+courseRouter
+  .route('/:id')
   .get(getCourse)
   .patch(updateCourse)
   .delete(deleteCourse);
 
-const port = 3000;
+app.use('/api/v1/staff', staffRouter);
+app.use('/api/v1/courses', courseRouter);
 
 // Start Server
+const port = 3000;
+
 app.listen(port, () => {
   console.log(`App running on port ${port}...`);
 });
