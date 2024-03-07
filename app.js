@@ -1,20 +1,23 @@
 const fs = require('fs');
 const express = require('express');
+const morgan = require('morgan');
 
 const app = express();
 
+// Middlewares
+app.use(morgan('dev'));
 app.use(express.json());
 
 const staff = JSON.parse(fs.readFileSync(`${__dirname}/dev-data/staff.json`));
-
-app.get('/api/v1/staff', (req, res) => {
+const courses = [];
+// Route Handlers
+const getAllStaff = (req, res) => {
   res
     .status(200)
     .json({ status: 'success', results: staff.length, data: { staff } });
-});
+};
 
-// GET staff member by id
-app.get('/api/v1/staff/:id', (req, res) => {
+const getStaffMember = (req, res) => {
   const id = req.params.id * 1;
   const staffMember = staff.find((el) => el.id === id);
 
@@ -31,10 +34,9 @@ app.get('/api/v1/staff/:id', (req, res) => {
       staffMember,
     },
   });
-});
+};
 
-// create staff memeber
-app.post('/api/v1/staff', (req, res) => {
+const createStaffMember = (req, res) => {
   const newId = staff[staff.length - 1].id + 1;
 
   const newStaff = Object.assign({ id: newId }, req.body);
@@ -52,10 +54,9 @@ app.post('/api/v1/staff', (req, res) => {
       });
     }
   );
-});
+};
 
-// Update post
-app.patch('/api/v1/staff/:id', (req, res) => {
+const updateStaffMember = (req, res) => {
   const id = req.params.id * 1;
   const staffMember = staff.find((el) => el.id === id);
 
@@ -70,10 +71,87 @@ app.patch('/api/v1/staff/:id', (req, res) => {
     status: 'success',
     data: 'updated staff member object',
   });
-});
+};
+
+const deleteStaffMember = (req, res) => {
+  const id = req.params.id * 1;
+  const staffMember = staff.find((el) => el.id === id);
+
+  if (!staffMember) {
+    return res.status(404).json({
+      status: 'fail',
+      message: 'Invalid Id',
+    });
+  }
+  // TODO: implement when db is set up
+  res.status(204).json({
+    status: 'success',
+    data: null,
+  });
+};
+
+const getAllCourses = (req, res) => {
+  res
+    .status(500)
+    .json({ status: 'error', message: 'This route is not yet defined' });
+};
+
+const getCourse = (req, res) => {
+  res
+    .status(500)
+    .json({ status: 'error', message: 'This route is not yet defined' });
+};
+
+const createCourse = (req, res) => {
+  res
+    .status(500)
+    .json({ status: 'error', message: 'This route is not yet defined' });
+};
+
+const updateCourse = (req, res) => {
+  res
+    .status(500)
+    .json({ status: 'error', message: 'This route is not yet defined' });
+};
+
+const deleteCourse = (req, res) => {
+  res
+    .status(500)
+    .json({ status: 'error', message: 'This route is not yet defined' });
+};
+
+// GET staff member by id
+// app.get('/api/v1/staff/:id', getStaffMember);
+
+// create staff memeber
+// app.post('/api/v1/staff', createStaffMember);
+
+// Update staff member
+// app.patch('/api/v1/staff/:id', updateStaffMember);
+
+// Delete Staff member
+// app.delete('/api/v1/staff/:id', deleteStaffMember);
+
+// Routes
+app.route('/api/v1/staff').get(getAllStaff).post(createStaffMember);
+
+app
+  .route('/api/v1/staff/:id')
+  .get(getStaffMember)
+  .patch(updateStaffMember)
+  .delete(deleteStaffMember);
+
+app.route('/api/v1/courses').get(getAllCourses).post(createCourse);
+
+app
+  .route('/api/v1/courses/:id')
+  .get(getCourse)
+  .patch(updateCourse)
+  .delete(deleteCourse);
 
 const port = 3000;
 
+// Start Server
 app.listen(port, () => {
   console.log(`App running on port ${port}...`);
 });
