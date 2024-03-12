@@ -1,6 +1,8 @@
 const express = require('express');
 const morgan = require('morgan');
 
+const staffRouter = require('./routes/staffRoutes');
+const courseRouter = require('./routes/courseRoutes');
 const app = express();
 
 // Middlewares
