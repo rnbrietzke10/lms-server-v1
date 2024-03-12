@@ -5,10 +5,14 @@ const {
   getStaffMember,
   updateStaffMember,
   deleteStaffMember,
+  checkBody,
+  checkId,
 } = require('./../controllers/staffController');
 const router = express.Router();
 
-router.route('/').get(getAllStaff).post(createStaffMember);
+router.param('id', checkId);
+
+router.route('/').get(getAllStaff).post(checkBody, createStaffMember);
 
 router
   .route('/:id')
